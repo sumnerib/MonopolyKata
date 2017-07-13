@@ -53,7 +53,7 @@ class Game
 
             #Get the spaces
             old_loc = @board.get_location(i)
-            new_loc = (i.roll(seed) + old_loc) % 39
+            new_loc = (i.roll(seed) + old_loc) % 40
 
             #Move the player
             @board.get_space(new_loc).add_player(i)
