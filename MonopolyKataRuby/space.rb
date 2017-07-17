@@ -19,12 +19,12 @@ class Space
         @players.push(player)
     end
 
-    def remove_player(name)
-        @players.delete(Player.new(name))
+    def remove_player(player)
+        @players.delete(player)
     end
 
-    def has_player(name)
-        @players.include?(Player.new(name))
+    def has_player(player)
+        @players.include?(player)
     end
 
     def is_empty

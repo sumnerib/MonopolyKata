@@ -52,8 +52,10 @@ class Game
         @players.each { |i|
 
             #Get the spaces
-            old_loc = @board.get_location(i)
+            old_loc = @board.get_location(i.piece)
+            puts "Old: #{old_loc}"
             new_loc = (i.roll(seed) + old_loc) % 40
+            puts "New: #{new_loc}"
 
             #Move the player
             @board.get_space(new_loc).add_player(i)

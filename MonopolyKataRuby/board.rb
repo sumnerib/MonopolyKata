@@ -35,4 +35,11 @@ class Board
         }
         return 0
     end
+
+    def move_player(player_name, roll)
+
+        cur_loc = get_location(player_name)
+        @spaces[cur_loc].remove_player(player_name)
+        @spaces[(cur_loc + roll) % 40].add_player(player_name)
+    end
 end
