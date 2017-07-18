@@ -11,12 +11,7 @@ class Board
 
         @spaces = []
         40.times do |i|
-            case i
-                when 4 then @spaces.push(Income_Tax.new())
-                when 10 then @spaces.push(Just_Visiting.new())
-                when 38 then @spaces.push(Luxury_Tax.new())
-                else @spaces.push(Space.new(i))
-            end
+            @spaces.push(get_space_instance(i))
         end
     end
 
@@ -64,5 +59,14 @@ class Board
         @spaces[new_loc].add_player(player)
 
         return new_loc
+    end
+
+    def get_space_instance(location)
+        case location
+            when 4 then Income_Tax.new()
+            when 10 then Just_Visiting.new()
+            when 38 then Luxury_Tax.new()
+            else Space.new(location)
+        end
     end
 end
