@@ -1,14 +1,26 @@
 
-
+require_relative "just_visiting.rb"
 require_relative "space.rb"
+require_relative "income_tax.rb"
+require_relative "luxury_tax.rb"
 require_relative "player.rb"
 
 class Board
 
     def initialize()
+
         @spaces = []
         40.times do |i|
-            @spaces.push(Space.new(i))
+            @spaces.push(get_space_instance(i))
+        end
+    end
+
+    # Checks if any special movments need to take place
+    def check_special_move(new_loc)
+
+        case new_loc
+            when 30 then 10
+            else new_loc
         end
     end
 
@@ -24,15 +36,37 @@ class Board
         return spaces_with_players
     end
 
+    # Gets the space object givent the location number
     def get_space(sp)
        @spaces[sp]
     end
 
-    def get_location(player_name)
+    # Gets the board location of the given player
+    def get_location(player)
 
         get_locations.each { |i|
-            return i.number if i.has_player(player_name)
+            return i.number if i.has_player(player)
         }
         return 0
+    end
+
+    # Returns the location after movement
+    def move_player(player, roll)
+
+        cur_loc = get_location(player)
+        @spaces[cur_loc].remove_player(player)
+        new_loc = check_special_move((cur_loc + roll) % 40)
+        @spaces[new_loc].add_player(player)
+
+        return new_loc
+    end
+
+    def get_space_instance(location)
+        case location
+            when 4 then Income_Tax.new()
+            when 10 then Just_Visiting.new()
+            when 38 then Luxury_Tax.new()
+            else Space.new(location)
+        end
     end
 end

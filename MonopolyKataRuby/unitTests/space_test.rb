@@ -21,13 +21,13 @@ class Space_test<Test::Unit::TestCase
         s2.add_player(p2)
 
         # has_player
-        assert(s1.has_player("Horse"))
-        assert(!s2.has_player("Horse"))
-        assert(!s1.has_player("Car"))
-        assert(s2.has_player("Car"))
+        assert(s1.has_player(p1))
+        assert(!s2.has_player(p1))
+        assert(!s1.has_player(p2))
+        assert(s2.has_player(p2))
 
         #remove_player
-        s1.remove_player(p1.piece)
-        assert(!s1.has_player(p1.piece))
+        s1.remove_player(p1)
+        assert(!s1.has_player(p1))
     end
 end
