@@ -43,7 +43,7 @@ class Game
         return names
     end
 
-    def play_round(seed)
+    def play_round(seed=Time.new.usec)
 
         # Short-circuit if not enough
         return "Not enough players" if @players.size < 2

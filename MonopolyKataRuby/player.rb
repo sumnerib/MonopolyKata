@@ -20,7 +20,7 @@ class Player
         @piece == p.piece
     end
 
-    def roll(seed)
+    def roll(seed=Time.new.usec)
         r = Random.new(seed)
         r.rand(1..6)
     end
