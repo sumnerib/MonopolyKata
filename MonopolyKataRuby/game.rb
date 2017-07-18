@@ -54,7 +54,7 @@ class Game
             #Move the player
             new_loc = @board.move_player(i, i.roll(seed))
 
-            scorecard << i.piece << ": " << "#{new_loc}" << ", "
+            scorecard << "#{i.piece}: #{new_loc}, "
         }
         return scorecard[0..(scorecard.size - 3)]
     end
