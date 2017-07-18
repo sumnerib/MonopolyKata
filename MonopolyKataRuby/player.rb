@@ -9,13 +9,11 @@ class Player
 
     def initialize(piece)
         @piece = piece
+        @balance = 0
     end
 
-    attr_accessor :piece
-    attr_writer   :turn
-    attr_accessor :turn
-    attr_writer   :location
-    attr_accessor :location
+    attr_reader :piece
+    attr_accessor :balance
 
     #Redefine equality operator
     def ==(p)
@@ -23,8 +21,15 @@ class Player
     end
 
     def roll(seed)
-
         r = Random.new(seed)
         r.rand(1..6)
+    end
+
+    def add_balance(money)
+        @balance += money
+    end
+
+    def subtract_balance(money)
+        @balance = @balance > money ? @balance - money : 0
     end
 end

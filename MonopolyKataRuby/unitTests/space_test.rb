@@ -27,7 +27,7 @@ class Space_test<Test::Unit::TestCase
         assert(s2.has_player(p2))
 
         #remove_player
-        s1.remove_player(p1.piece)
-        assert(!s1.has_player(p1.piece))
+        s1.remove_player(p1)
+        assert(!s1.has_player(p1))
     end
 end

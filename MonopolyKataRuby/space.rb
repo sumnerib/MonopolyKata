@@ -12,8 +12,8 @@ class Space
         @players = []
     end
 
-    attr_accessor :number
-    attr_accessor :players
+    attr_reader :number
+    attr_reader :players
 
     def add_player(player)
         @players.push(player)

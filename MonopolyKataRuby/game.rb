@@ -17,9 +17,9 @@ class Game
         @players = []
     end
 
-    attr_accessor :rounds
-    attr_accessor :board
-    attr_accessor :players
+    attr_reader :rounds
+    attr_reader :board
+    attr_reader :players
 
     # Returns true if the player was successfully added
     def add_player(name)
@@ -51,15 +51,8 @@ class Game
         scorecard = ""
         @players.each { |i|
 
-            #Get the spaces
-            old_loc = @board.get_location(i.piece)
-            puts "Old: #{old_loc}"
-            new_loc = (i.roll(seed) + old_loc) % 40
-            puts "New: #{new_loc}"
-
             #Move the player
-            @board.get_space(new_loc).add_player(i)
-            @board.get_space(old_loc).remove_player(i)
+            new_loc = @board.move_player(i, i.roll(seed))
 
             scorecard << i.piece << ": " << "#{new_loc}" << ", "
         }
