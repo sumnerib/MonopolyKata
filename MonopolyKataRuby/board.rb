@@ -2,6 +2,7 @@
 require_relative "just_visiting.rb"
 require_relative "space.rb"
 require_relative "income_tax.rb"
+require_relative "go_space.rb"
 require_relative "luxury_tax.rb"
 require_relative "player.rb"
 
@@ -53,16 +54,26 @@ class Board
     # Returns the location after movement
     def move_player(player, roll)
 
+        # Leave old location
         cur_loc = get_location(player)
         @spaces[cur_loc].remove_player(player)
-        new_loc = check_special_move((cur_loc + roll) % 40)
-        @spaces[new_loc].add_player(player)
+
+        # Calculate next location and move
+        new_loc = (cur_loc + roll) % 40
+        
+        # Found out if the player needs to be payed for passing go
+        @spaces[0].times_passing_go(cur_loc, roll).times do
+            @spaces[0].pay_player(player)
+        end
+
+        @spaces[check_special_move(new_loc)].add_player(player)
 
         return new_loc
     end
 
     def get_space_instance(location)
         case location
+            when 0 then Go_Space.new()
             when 4 then Income_Tax.new()
             when 10 then Just_Visiting.new()
             when 38 then Luxury_Tax.new()
