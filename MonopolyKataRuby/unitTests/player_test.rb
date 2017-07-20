@@ -22,5 +22,7 @@ class Player_Test<Test::Unit::TestCase
         assert_equal(20, p1.balance)
         p1.subtract_balance(10)
         assert_equal(10, p1.balance)
+        p1.subtract_balance(20)
+        assert_equal(0, p1.balance)
     end
 end

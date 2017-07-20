@@ -31,5 +31,6 @@ class Player
 
     def subtract_balance(money)
         @balance = @balance > money ? @balance - money : 0
+        #return @balance >= money
     end
 end
