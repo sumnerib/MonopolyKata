@@ -20,6 +20,7 @@ class Player
         @piece == p.piece
     end
 
+    # Move out ****
     def roll(seed=Time.new.usec)
         r = Random.new(seed)
         r.rand(1..6)

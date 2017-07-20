@@ -56,6 +56,6 @@ class Game
 
             scorecard << "#{i.piece}: #{new_loc}, "
         }
-        return scorecard[0..(scorecard.size - 3)]
+        scorecard[0..(scorecard.size - 3)]
     end
 end

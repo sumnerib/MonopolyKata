@@ -59,10 +59,14 @@ class Board
         @spaces[cur_loc].remove_player(player)
 
         # Calculate next location and move
+        times_passing_go = (cur_loc + roll) / 40
         new_loc = (cur_loc + roll) % 40
+
+        # If player lands on go don't overpay
+        times_passing_go = new_loc == 0 ? times_passing_go - 1 : times_passing_go 
         
         # Found out if the player needs to be payed for passing go
-        @spaces[0].times_passing_go(cur_loc, roll).times do
+        times_passing_go.times do
             @spaces[0].pay_player(player)
         end
 

@@ -12,7 +12,7 @@ class File_Reader_test<Test::Unit::TestCase
 
     def test_file_reader
         
-        reader = File_Reader.new("property_input_test.in")
+        reader = File_Reader.new("C:\\Users\\IBSUMNE\\MonopolyKata\\MonopolyKataRuby\\unitTests\\property_input_test.in")
         assert_equal("Oriental Ave.", reader.next[3])
         assert(reader.has_next)
     end
