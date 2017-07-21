@@ -18,6 +18,7 @@ class Property < Space
 
     attr_reader :owned
     attr_reader :owner
+    attr_accessor :rent
 
     def add_player(player)
         super(player)

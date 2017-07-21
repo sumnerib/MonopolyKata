@@ -5,12 +5,15 @@ require_relative "income_tax.rb"
 require_relative "go_space.rb"
 require_relative "luxury_tax.rb"
 require_relative "player.rb"
+require_relative "properties/property_group.rb"
+require_relative "properties/property_consts.rb"
 
 class Board
 
     def initialize()
 
         @spaces = []
+        @property_groups = Hash[]
         40.times do |i|
             @spaces.push(get_space_instance(i))
         end
@@ -84,4 +87,7 @@ class Board
             else Space.new(location)
         end
     end
+
+    # Gets next property from file reader while also adding it 
+    # to a corresponding property group
 end
