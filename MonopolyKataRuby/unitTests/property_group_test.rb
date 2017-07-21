@@ -28,7 +28,7 @@ class Property_Group_test<Test::Unit::TestCase
             Property_Consts::DARK_GREEN
         )))
 
-        pg.updateRent()
+        pg.update_rent()
         assert_equal(35, pp.rent)
         assert_equal(50, bw.rent)
 
@@ -39,7 +39,7 @@ class Property_Group_test<Test::Unit::TestCase
         pp.add_player(p1)
         bw.add_player(p2)
 
-        pg.updateRent()
+        pg.update_rent()
         assert_equal(70, pp.rent)
         assert_equal(100, bw.rent)
     end
