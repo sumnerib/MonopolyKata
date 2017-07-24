@@ -12,8 +12,12 @@ require "test/unit"
 class Real_Estate_test<Test::Unit::TestCase
 
     def test_real_estate
-        re = Real_Estate.new(6, 100, 6, "Oriental Ave.", 
-                             Property_Consts::LIGHT_BLUE)
-        assert_equal("6: Oriental Ave.(Light-Blue)", re.to_s)        
+        re = Real_Estate.new(37, 350, 35, "Park Place", 
+                             Property_Consts::DARK_BLUE)
+        assert_equal("37: Park Place(Dark-Blue)", re.to_s)
+        
+        # calc rent
+        re.calc_rent(true)
+        assert_equal(70, re.rent)
     end
 end

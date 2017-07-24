@@ -5,6 +5,7 @@
 ############################
 
 require_relative "../properties/property.rb"
+require_relative "../properties/real_estate.rb"
 require_relative "../properties/property_group.rb"
 require_relative "../properties/property_consts.rb"
 require "test/unit"
@@ -28,18 +29,20 @@ class Property_Group_test<Test::Unit::TestCase
             Property_Consts::DARK_GREEN
         )))
 
-        pg.update_rent()
+        # find number owned
+        assert_equal(0, pg.find_num_owned(pp))
+
+        # Update rent
+        pg.update_rent(1)
         assert_equal(35, pp.rent)
         assert_equal(50, bw.rent)
 
         p1 = Player.new("Horse")
-        p2 = Player.new("Car")
         p1.add_balance(1000)
-        p2.add_balance(1000)
         pp.add_player(p1)
-        bw.add_player(p2)
+        bw.add_player(p1)
 
-        pg.update_rent()
+        pg.update_rent(1)
         assert_equal(70, pp.rent)
         assert_equal(100, bw.rent)
     end

@@ -7,13 +7,29 @@ require_relative "luxury_tax.rb"
 require_relative "player.rb"
 require_relative "properties/property_group.rb"
 require_relative "properties/property_consts.rb"
+require_relative "properties/file_reader.rb"
+require_relative "properties/railroad.rb"
+require_relative "properties/real_estate.rb"
+require_relative "properties/utility.rb"
 
 class Board
 
     def initialize()
 
         @spaces = []
-        @property_groups = Hash[]
+        @property_reader = File_Reader.new("C:\\Users\\IBSUMNE\\MonopolyKata\\MonopolyKataRuby\\properties\\property_input.in")
+        @property_groups = Hash[
+            Property_Consts::PURPLE => Property_Group.new(Property_Consts::PURPLE),
+            Property_Consts::LIGHT_BLUE => Property_Group.new(Property_Consts::LIGHT_BLUE),
+            Property_Consts::VIOLET => Property_Group.new(Property_Consts::VIOLET),
+            Property_Consts::ORANGE => Property_Group.new(Property_Consts::ORANGE),
+            Property_Consts::RED => Property_Group.new(Property_Consts::RED),
+            Property_Consts::YELLOW => Property_Group.new(Property_Consts::YELLOW),
+            Property_Consts::DARK_GREEN => Property_Group.new(Property_Consts::DARK_GREEN),
+            Property_Consts::DARK_BLUE => Property_Group.new(Property_Consts::DARK_BLUE),
+            Property_Consts::UTIL => Property_Group.new(Property_Consts::UTIL),
+            Property_Consts::RAILROAD => Property_Group.new(Property_Consts::RAILROAD)
+        ]
         40.times do |i|
             @spaces.push(get_space_instance(i))
         end
@@ -32,7 +48,7 @@ class Board
     def get_locations
 
         spaces_with_players = []
-        for space in @spaces
+        @spaces.each do |space|
             if !space.is_empty
                 spaces_with_players.push(space)
             end
@@ -75,6 +91,9 @@ class Board
 
         @spaces[check_special_move(new_loc)].add_player(player)
 
+        # Tell the property groups to update their rent rates if necessary
+        update_property_groups(roll)
+
         return new_loc
     end
 
@@ -84,10 +103,34 @@ class Board
             when 4 then Income_Tax.new()
             when 10 then Just_Visiting.new()
             when 38 then Luxury_Tax.new()
-            else Space.new(location)
+            when 2, 7, 17, 20, 22, 30, 33, 36 then Space.new(location)
+            else get_next_property()
         end
     end
 
     # Gets next property from file reader while also adding it 
     # to a corresponding property group
+    def get_next_property()
+        return if !@property_reader.has_next
+
+        line = @property_reader.next
+        prop = nil
+        case line[4]
+            when Property_Consts::RAILROAD
+                prop = Railroad.new(line[0].to_i, line[1].to_i, line[3])
+            when Property_Consts::UTIL
+                prop = Utility.new(line[0].to_i, line[1].to_i, line[3])
+            else
+                prop = Real_Estate.new(line[0].to_i, line[1].to_i, 
+                                       line[2].to_i, line[3], line[4])
+        end
+        @property_groups[line[4]].add_property(prop)
+        #puts prop
+        return prop 
+    end
+
+    # Tells the property groups to update their rates if necessary
+    def update_property_groups(roll)
+        @property_groups.each { |_, v| v.update_rent(roll) }
+    end
 end

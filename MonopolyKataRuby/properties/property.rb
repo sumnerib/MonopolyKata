@@ -8,10 +8,11 @@ require_relative "../space.rb"
 
 class Property < Space
 
-    def initialize(location, price, rent)
+    def initialize(location, price, rent, name)
         super(location)
         @price = price
         @rent = rent
+        @name = name
         @owned = false
         @owner = nil 
     end
@@ -34,6 +35,13 @@ class Property < Space
     # This method doesn't check if player is owner
     def charge_rent(player)
         player.subtract_balance(@rent)
+    end
+
+    # Copies the attributes of other into this
+    def copy(other)
+        other.instance_variables.each do |v| 
+          instance_variable_set v, other.instance_variable_get(v)
+        end
     end
 
     # Sells this property to the given player

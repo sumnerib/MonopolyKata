@@ -9,7 +9,7 @@ class File_Reader
 
         @lines = []
         File.open(input_file).readlines.each do |line|
-            @lines.push(line.split(","))
+            @lines.push(line.chop.split(","))
             @has_next = true
             @index = 0    
         end
@@ -22,6 +22,7 @@ class File_Reader
         raise "Out of File Data" if !@has_next
         next_line = @lines[@index]
         @index += 1
+        @has_next = @index < @lines.length
         return next_line
     end
 end
