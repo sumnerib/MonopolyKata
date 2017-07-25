@@ -63,12 +63,47 @@ class Board_Test<Test::Unit::TestCase
         assert_equal(105, p2.balance)
 
         # update property groups
-        b1.get_space(1).add_player(p2)
-        b1.get_space(3).add_player(p3)
+        b1.move_player(p2, 2)
+        assert_equal(1, b1.get_location(p2))
+        b1.move_player(p3, 2)
+        assert_equal(3, b1.get_location(p3))
         b1.update_property_groups(1)
         assert_equal(4, b1.get_space(1).rent)
 
         # get space instance
         assert(b1.get_space_instance(0).instance_of? Go_Space)
+
+        # Property
+        b1.move_player(p2, 4)
+        assert_equal(303, p2.balance)
+
+        p4 = Player.new("Shoe")
+        p4.add_balance(10000)
+        p2.add_balance(10000)
+        b1.move_player(p4, 5)
+        assert_equal(9975, p4.balance)
+
+        b1.move_player(p2, 10)
+        b1.move_player(p4, 10)
+        assert_equal(9925, p4.balance)
+
+        b1.move_player(p2, 10)
+        b1.move_player(p4, 10)
+        assert_equal(25, b1.get_location(p4))
+        assert_equal(100, b1.get_space(25).rent)
+        assert_equal(9825, p4.balance)
+
+        b1.move_player(p2, 10)
+        b1.move_player(p4, 10)
+        assert_equal(9625, p4.balance)  
+        
+        # Utilities
+        b1.move_player(p2, 17)
+        b1.move_player(p4, 17)
+        assert_equal(9757, p4.balance)
+
+        b1.move_player(p2, 16)
+        b1.move_player(p4, 16)
+        assert_equal(9597, p4.balance)
     end
 end
