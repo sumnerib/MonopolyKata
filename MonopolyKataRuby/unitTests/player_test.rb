@@ -5,6 +5,7 @@
 ############################
 
 require_relative "../player.rb"
+require_relative "test_dice.rb"
 require "test/unit"
 
 class Player_Test<Test::Unit::TestCase
@@ -13,9 +14,11 @@ class Player_Test<Test::Unit::TestCase
 
         p1 = Player.new("Horse")
         p2 = Player.new("Car")
+        td1 = Test_Dice.new(1)
+        td2 = Test_Dice.new(2)
 
-        assert_equal(6, p1.roll(1))
-        assert_equal(1, p1.roll(2))
+        assert_equal(12, p1.roll(td1))
+        assert_equal(2, p1.roll(td2))
 
         #Balance changes
         p1.add_balance(20)

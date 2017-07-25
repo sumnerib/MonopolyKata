@@ -43,7 +43,7 @@ class Game
         return names
     end
 
-    def play_round(seed=Time.new.usec)
+    def play_round(dice)
 
         # Short-circuit if not enough
         return "Not enough players" if @players.size < 2
@@ -52,7 +52,7 @@ class Game
         @players.each { |i|
 
             #Move the player
-            new_loc = @board.move_player(i, i.roll(seed))
+            new_loc = @board.move_player(i, i.roll(dice))
 
             scorecard << "#{i.piece}: #{new_loc}, "
         }

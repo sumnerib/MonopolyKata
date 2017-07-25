@@ -21,9 +21,8 @@ class Player
     end
 
     # Move out ****
-    def roll(seed=Time.new.usec)
-        r = Random.new(seed)
-        r.rand(1..6)
+    def roll(dice)
+        dice.roll()
     end
 
     def add_balance(money)
@@ -32,6 +31,5 @@ class Player
 
     def subtract_balance(money)
         @balance = @balance > money ? @balance - money : 0
-        #return @balance >= money
     end
 end
