@@ -9,7 +9,7 @@ require_relative "property.rb"
 class Railroad < Property 
 
     def initialize(location, price, name)
-        super(location, price, 0, name)
+        super(location, price, 25, name)
     end
 
     def calc_rent(num_owned)

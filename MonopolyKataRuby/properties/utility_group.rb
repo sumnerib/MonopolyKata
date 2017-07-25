@@ -5,23 +5,20 @@
 
 require_relative "../player.rb"
 require_relative "../properties/property_consts.rb"
+require_relative "property_group.rb"
 
-class Property_Group 
+class Utility_Group < Property_Group 
 
-    def initialize(group_key)
-        @group_key = group_key    
+    def initialize()
         @properties = [] 
     end
 
     attr_reader :properties
 
-    # Adds a property to the group
-    def add_property(prop)
-        @properties.push(prop)
-    end
-    
     # Tells the properties to update their rent
     def update_rent(roll)
-        raise "Unimplemented Method: update_rent(roll)"
+        num_owned = 0
+        @properties.each { |u| num_owned += 1 if u.owned }
+        @properties.each { |u| u.calc_rent(roll, (num_owned > 1))}
     end
 end

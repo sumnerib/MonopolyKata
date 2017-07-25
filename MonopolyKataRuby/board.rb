@@ -5,7 +5,9 @@ require_relative "income_tax.rb"
 require_relative "go_space.rb"
 require_relative "luxury_tax.rb"
 require_relative "player.rb"
-require_relative "properties/property_group.rb"
+require_relative "properties/real_estate_group.rb"
+require_relative "properties/utility_group.rb"
+require_relative "properties/railroad_group.rb"
 require_relative "properties/property_consts.rb"
 require_relative "properties/file_reader.rb"
 require_relative "properties/railroad.rb"
@@ -19,16 +21,16 @@ class Board
         @spaces = []
         @property_reader = File_Reader.new("C:\\Users\\IBSUMNE\\MonopolyKata\\MonopolyKataRuby\\properties\\property_input.in")
         @property_groups = Hash[
-            Property_Consts::PURPLE => Property_Group.new(Property_Consts::PURPLE),
-            Property_Consts::LIGHT_BLUE => Property_Group.new(Property_Consts::LIGHT_BLUE),
-            Property_Consts::VIOLET => Property_Group.new(Property_Consts::VIOLET),
-            Property_Consts::ORANGE => Property_Group.new(Property_Consts::ORANGE),
-            Property_Consts::RED => Property_Group.new(Property_Consts::RED),
-            Property_Consts::YELLOW => Property_Group.new(Property_Consts::YELLOW),
-            Property_Consts::DARK_GREEN => Property_Group.new(Property_Consts::DARK_GREEN),
-            Property_Consts::DARK_BLUE => Property_Group.new(Property_Consts::DARK_BLUE),
-            Property_Consts::UTIL => Property_Group.new(Property_Consts::UTIL),
-            Property_Consts::RAILROAD => Property_Group.new(Property_Consts::RAILROAD)
+            Property_Consts::PURPLE => Real_Estate_Group.new(),
+            Property_Consts::LIGHT_BLUE => Real_Estate_Group.new(),
+            Property_Consts::VIOLET => Real_Estate_Group.new(),
+            Property_Consts::ORANGE => Real_Estate_Group.new(),
+            Property_Consts::RED => Real_Estate_Group.new(),
+            Property_Consts::YELLOW => Real_Estate_Group.new(),
+            Property_Consts::DARK_GREEN => Real_Estate_Group.new(),
+            Property_Consts::DARK_BLUE => Real_Estate_Group.new(),
+            Property_Consts::UTIL => Utility_Group.new(),
+            Property_Consts::RAILROAD => Railroad_Group.new()
         ]
         40.times do |i|
             @spaces.push(get_space_instance(i))
