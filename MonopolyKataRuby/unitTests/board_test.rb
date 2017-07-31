@@ -107,5 +107,9 @@ class Board_Test<Test::Unit::TestCase
         b1.move_player(p2, 16)
         b1.move_player(p4, 16)
         assert_equal(9597, p4.balance)
+
+        # Jail
+        p5 = Player.new("Dog")
+
     end
 end

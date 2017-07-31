@@ -5,6 +5,7 @@ require_relative "income_tax.rb"
 require_relative "go_space.rb"
 require_relative "luxury_tax.rb"
 require_relative "player.rb"
+require_relative "jail.rb"
 require_relative "properties/real_estate_group.rb"
 require_relative "properties/utility_group.rb"
 require_relative "properties/railroad_group.rb"
@@ -19,6 +20,7 @@ class Board
     def initialize()
 
         @spaces = []
+        @jail = Jail.new()
         @property_reader = File_Reader.new("C:\\Users\\IBSUMNE\\MonopolyKata\\MonopolyKataRuby\\properties\\property_input.in")
         @property_groups = Hash[
             Property_Consts::PURPLE => Real_Estate_Group.new(),
@@ -36,6 +38,8 @@ class Board
             @spaces.push(get_space_instance(i))
         end
     end
+
+    attr_reader :jail
 
     # Checks if any special movments need to take place
     def check_special_move(new_loc)
@@ -66,10 +70,16 @@ class Board
     # Gets the board location of the given player
     def get_location(player)
 
+        return -1 if @jail.in_jail(player)
         get_locations.each { |i|
             return i.number if i.has_player(player)
         }
         return 0
+    end
+
+    # Moves the player using the dice roll
+    def move_player(player, dice)
+         move_player(player, player.roll(dice))
     end
 
     # Returns the location after movement
@@ -127,8 +137,27 @@ class Board
                                        line[2].to_i, line[3], line[4])
         end
         @property_groups[line[4]].add_property(prop)
-        #puts prop
+
         return prop 
+    end
+
+    def do_jail(player, dice)
+
+        new_loc = -1
+        
+        # Find out what turn the player is on
+        if (@jail.tuns_taken(player) < 2)
+            # Get the players choice
+            case @jail.read_in_option
+                when 1 then new_loc = @jail.roll_to_leave(player, dice)
+                when 2 then new_loc = 10
+                else new_loc = @jail.pay_to_leave(player, dice)
+            end
+        else
+            new_loc = @jail.pay_to_leave(player, dice)
+        end
+
+        return new_loc
     end
 
     # Tells the property groups to update their rates if necessary

@@ -37,9 +37,7 @@ class Game
         @players = @players.shuffle(random: Random.new(seed))
 
         names = []
-        @players.each { |i|
-            names.push(i.piece)
-        }
+        @players.each { |i| names.push(i.piece) }
         return names
     end
 
@@ -52,7 +50,7 @@ class Game
         @players.each { |i|
 
             #Move the player
-            new_loc = @board.move_player(i, i.roll(dice))
+            new_loc = @board.move_player(i, dice)
 
             scorecard << "#{i.piece}: #{new_loc}, "
         }
