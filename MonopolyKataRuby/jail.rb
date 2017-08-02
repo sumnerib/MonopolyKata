@@ -37,9 +37,9 @@ class Jail
         puts '2:(Use "Get Out of Jail Free" card)'
         puts "3:(Pay 50$ to leave)"
         opt = gets
-        puts "OPT:#{opt}"
+        
         case opt.to_i
-            when 1..3 then opt
+            when 1..3 then opt.to_i
             else 1
         end
     end
