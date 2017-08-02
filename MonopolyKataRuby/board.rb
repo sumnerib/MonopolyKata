@@ -6,6 +6,7 @@ require_relative "go_space.rb"
 require_relative "luxury_tax.rb"
 require_relative "player.rb"
 require_relative "jail.rb"
+require_relative "go_to_jail.rb"
 require_relative "properties/real_estate_group.rb"
 require_relative "properties/utility_group.rb"
 require_relative "properties/railroad_group.rb"
@@ -45,7 +46,7 @@ class Board
     def check_special_move(new_loc)
 
         case new_loc
-            when 30 then 10
+            when 30 then -1
             else new_loc
         end
     end
@@ -78,8 +79,14 @@ class Board
     end
 
     # Moves the player using the dice roll
-    def move_player(player, dice)
-         move_player(player, player.roll(dice))
+    def move_player_dice(player, dice)
+        if (@jail.in_jail(player))
+            new_loc = do_jail(player, dice)
+            @spaces[new_loc].add_player(player)
+            update_property_groups(new_loc - 10) # Subtract 10 for roll
+            return new_loc
+        end
+        move_player(player, player.roll(dice))
     end
 
     # Returns the location after movement
@@ -101,7 +108,13 @@ class Board
             @spaces[0].pay_player(player)
         end
 
-        @spaces[check_special_move(new_loc)].add_player(player)
+        new_loc = check_special_move(new_loc)
+        if (new_loc == -1)
+            @jail.add_player(player)
+            return new_loc
+        end
+
+        @spaces[new_loc].add_player(player)
 
         # Tell the property groups to update their rent rates if necessary
         update_property_groups(roll)
@@ -114,8 +127,9 @@ class Board
             when 0 then Go_Space.new()
             when 4 then Income_Tax.new()
             when 10 then Just_Visiting.new()
+            when 30 then Go_To_Jail.new(@jail)
             when 38 then Luxury_Tax.new()
-            when 2, 7, 17, 20, 22, 30, 33, 36 then Space.new(location)
+            when 2, 7, 17, 20, 22, 33, 36 then Space.new(location)
             else get_next_property()
         end
     end
@@ -146,18 +160,18 @@ class Board
         new_loc = -1
         
         # Find out what turn the player is on
-        if (@jail.tuns_taken(player) < 2)
+        if (@jail.turns_taken(player) < 3)
             # Get the players choice
             case @jail.read_in_option
                 when 1 then new_loc = @jail.roll_to_leave(player, dice)
                 when 2 then new_loc = 10
-                else new_loc = @jail.pay_to_leave(player, dice)
+                else new_loc = @jail.pay_to_leave(player, dice) + 10
             end
         else
-            new_loc = @jail.pay_to_leave(player, dice)
+            new_loc = @jail.pay_to_leave(player, dice) + 10
         end
 
-        return new_loc
+        return new_loc 
     end
 
     # Tells the property groups to update their rates if necessary

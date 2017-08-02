@@ -50,7 +50,7 @@ class Game
         @players.each { |i|
 
             #Move the player
-            new_loc = @board.move_player(i, dice)
+            new_loc = @board.move_player_dice(i, dice)
 
             scorecard << "#{i.piece}: #{new_loc}, "
         }

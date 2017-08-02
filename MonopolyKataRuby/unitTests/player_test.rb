@@ -14,11 +14,11 @@ class Player_Test<Test::Unit::TestCase
 
         p1 = Player.new("Horse")
         p2 = Player.new("Car")
-        td1 = Test_Dice.new(1)
-        td2 = Test_Dice.new(2)
+        td1 = Test_Dice.new(1, 2)
+        td2 = Test_Dice.new(7, 1)
 
-        assert_equal(12, p1.roll(td1))
-        assert_equal(2, p1.roll(td2))
+        assert_equal(7, p1.roll(td1))
+        assert_equal(11, p1.roll(td2))
 
         #Balance changes
         p1.add_balance(20)

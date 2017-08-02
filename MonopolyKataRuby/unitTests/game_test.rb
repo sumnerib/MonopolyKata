@@ -15,7 +15,7 @@ class Game_Test<Test::Unit::TestCase
 
     def test_game
 
-        td = Test_Dice.new(1)
+        td = Test_Dice.new(8, 6)
         g = Game.new(20)
         g.add_player("Horse")
         g.add_player("Car")
@@ -23,9 +23,9 @@ class Game_Test<Test::Unit::TestCase
         assert_equal(["Horse", "Car"], g.create_order(1))
         assert_equal(["Car", "Horse"], g.create_order(2))
 
-        assert_equal("Car: 12, Horse: 8", g.play_round(td))
-        assert_equal("Car: 22, Horse: 10", g.play_round(td))
-        assert_equal("Car: 26, Horse: 18", g.play_round(td))
+        assert_equal("Car: 7, Horse: 7", g.play_round(td))
+        assert_equal("Car: 13, Horse: 14", g.play_round(td))
+        assert_equal("Car: 22, Horse: 23", g.play_round(td))
 
         g2 = Game.new(20)
         g2.add_player("Horse")

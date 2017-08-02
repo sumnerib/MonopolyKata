@@ -17,7 +17,7 @@ class Board_Test<Test::Unit::TestCase
 
         p1 = Player.new("Car")
         b1 = Board.new()
-        td = Test_Dice.new(1)
+        td = Test_Dice.new(1, 1)
         b1.get_space(1).add_player(p1)
 
         assert_equal(1, b1.get_location(p1))
@@ -26,7 +26,7 @@ class Board_Test<Test::Unit::TestCase
         assert_equal(13, b1.move_player(p1, p1.roll(td)))
 
         #check special movements
-        assert_equal(10, b1.check_special_move(30))
+        assert_equal(-1, b1.check_special_move(30))
 
         # check outcomes of landing on or moving past certain spaces
         p2 = Player.new("Horse")
@@ -43,9 +43,10 @@ class Board_Test<Test::Unit::TestCase
 
         # go to Jail
         b1.move_player(p2, 25)
-        assert_equal(10, b1.get_location(p2))
+        assert_equal(-1, b1.get_location(p2))
         assert_equal(0, p2.balance)
-        b1.move_player(p2, 21)
+        p2 = Player.new("Watch")
+        b1.move_player(p2, 31)
         assert_equal(31, b1.get_location(p2))
         assert_equal(0, p2.balance)
 
@@ -110,6 +111,23 @@ class Board_Test<Test::Unit::TestCase
 
         # Jail
         p5 = Player.new("Dog")
+        p5.add_balance(10000)
+        td1 = Test_Dice.new(1, 2)
+        b1.jail.add_player(p5)
+        assert_equal(18, b1.do_jail(p5, td))
+        assert(!b1.jail.in_jail(p5))
+        
+        b1.jail.add_player(p5)
+        assert_equal(-1, b1.do_jail(p5, td1))
+        assert_equal(-1, b1.do_jail(p5, td1))
+        assert_equal(-1, b1.do_jail(p5, td1))
+        assert_equal(15, b1.do_jail(p5, td1))
 
+        b1.jail.add_player(p5)
+        assert_equal(20, b1.do_jail(p5, td))
+
+        assert_equal(2, b1.move_player_dice(p5, td))
+        b1.move_player(p5, 28)
+        assert(b1.jail.in_jail(p5))
     end
 end

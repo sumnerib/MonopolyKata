@@ -8,7 +8,7 @@ require_relative "player.rb"
 class Jail 
 
     def initialize
-        @players = Hash.new
+        @players = Hash.new(0)
     end    
 
     attr_reader :players 
@@ -36,9 +36,9 @@ class Jail
         puts "1:(Roll)"
         puts '2:(Use "Get Out of Jail Free" card)'
         puts "3:(Pay 50$ to leave)"
-        opt = gets.to_i
-
-        case opt
+        opt = gets
+        puts "OPT:#{opt}"
+        case opt.to_i
             when 1..3 then opt
             else 1
         end
@@ -49,7 +49,7 @@ class Jail
         @players[player] += 1
         if dice.roll1 == dice.roll2
             @players.delete(player)
-            return (dice.roll1 + dice.roll2)
+            return dice.roll1 + dice.roll2 + 10
         end
         return -1
     end
