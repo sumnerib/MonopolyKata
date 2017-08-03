@@ -31,5 +31,14 @@ class Game_Test<Test::Unit::TestCase
         g2.add_player("Horse")
 
         assert_equal("Not enough players", g2.play_round(td))
+
+
+        # doubles tracker
+        td1 = Test_Dice.new(6, 6)
+        g.play_round(td1)
+        g.play_round(td1)
+  #      assert_equal("Car: JAIL, Horse: JAIL", g.play_round(td1))
+        g.play_round(td1)
+        assert(g.doubles_tracker(g.players[0]))
     end
 end

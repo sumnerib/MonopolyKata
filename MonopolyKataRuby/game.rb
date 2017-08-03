@@ -48,12 +48,22 @@ class Game
 
         scorecard = ""
         @players.each { |i|
-
-            #Move the player
-            new_loc = @board.move_player_dice(i, dice)
-
-            scorecard << "#{i.piece}: #{new_loc}, "
+            new_loc = -1
+            doubles_tracker(i) ? @board.jail.add_player(i) :  new_loc = @board.move_player_dice(i, dice)
+            scorecard << (new_loc == -1 ? "#{i.piece}: JAIL, " : "#{i.piece}: #{new_loc}, ")
         }
         scorecard[0..(scorecard.size - 3)]
+    end
+
+    # Tracks the number of times a player 
+    # has rolled consecutive doubles
+    # returns true if third time rolling doubles
+    def doubles_tracker(player)
+        if (player.doubles == 3)
+            player.doubles = 0
+            return true
+        else
+            return false
+        end
     end
 end
