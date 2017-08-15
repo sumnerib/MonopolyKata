@@ -18,9 +18,9 @@ class Player
     attr_accessor :doubles 
 
     #Redefine equality operator
-    def ==(p)
-        @piece == p.piece
-    end
+    #def ==(p)
+     #   @piece == p.piece
+    #end
 
     def roll(dice)
         val = dice.roll()

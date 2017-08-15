@@ -24,7 +24,7 @@ class Jail
     def pay_to_leave(player, dice)
        if player.balance > 50
             @players.delete(player)
-            return dice.roll()
+            return dice.roll() + 10
        end
        @players[player] += 1
        return -1
@@ -57,5 +57,12 @@ class Jail
     # Returns the number of turns taken in jail
     def turns_taken(player)
         @players[player]
+    end
+
+    def to_s
+        value = "Jail: "
+        @players.each { |player, _| value << "#{player.piece}, " }
+        value = value[0..(value.size - 3)] if @players.length > 0
+        return value
     end
 end

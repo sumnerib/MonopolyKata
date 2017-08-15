@@ -32,7 +32,7 @@ class Jail_test<Test::Unit::TestCase
         assert(j.in_jail(p1))        
 
         p1.add_balance(1000)
-        assert_equal(10, j.pay_to_leave(p1, td))
+        assert_equal(20, j.pay_to_leave(p1, td))
         assert(!j.in_jail(p1))
 
         # Read in option

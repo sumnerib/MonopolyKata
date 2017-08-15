@@ -23,12 +23,14 @@ class Game
 
     # Returns true if the player was successfully added
     def add_player(name)
+        return add_player_instance(Player.new(name))
+    end
 
+    def add_player_instance(player)
         if players.size < 8
-            @players.push(Player.new(name))
+            @players.push(player)
             return true
         end
-
         return false
     end
 
@@ -48,11 +50,31 @@ class Game
 
         scorecard = ""
         @players.each { |i|
-            new_loc = -1
-            doubles_tracker(i) ? @board.jail.add_player(i) :  new_loc = @board.move_player_dice(i, dice)
+            
+            i.roll(dice)
+            if (doubles_tracker(i))    # Check for 3 consecutive doubles
+                new_loc = @board.send_to_jail(i)
+            else
+                new_loc = @board.move_player_dice(i, dice)
+            end
+
             scorecard << (new_loc == -1 ? "#{i.piece}: JAIL, " : "#{i.piece}: #{new_loc}, ")
         }
         scorecard[0..(scorecard.size - 3)]
+    end
+
+    def dump_board
+        
+        @board.get_locations.each { |space|
+            print "#{space.number}: "
+            space.players.each { |player| print "#{player.piece}, " }
+            print "\n"
+        }
+
+        puts @board.jail.to_s 
+
+        puts "\n**Balances**"
+        @players.each { |player| puts "#{player.piece}: #{player.balance}" }
     end
 
     # Tracks the number of times a player 

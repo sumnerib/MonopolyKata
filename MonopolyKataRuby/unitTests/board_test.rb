@@ -126,8 +126,21 @@ class Board_Test<Test::Unit::TestCase
         b1.jail.add_player(p5)
         assert_equal(20, b1.do_jail(p5, td))
 
-        assert_equal(2, b1.move_player_dice(p5, td))
-        b1.move_player(p5, 28)
+        assert_equal(10, b1.move_player_dice(p5, td))
+       
+        # Roll non-doubles, land on Go To Jail, player is in Jail, turn is over, 
+        # balance is unchanged.
+        b1.move_player(p5, 20)
         assert(b1.jail.in_jail(p5))
+        
+        # Pass over Go To Jail, nothing happens
+        p6 = Player.new("Cat")
+        p6.add_balance(10000)
+        b1.move_player(p6, 31)
+        assert(!b1.jail.in_jail(p6))
+
+        # Send to jail
+        b1.send_to_jail(p6)
+        assert_equal(-1, b1.get_location(p6))
     end
 end

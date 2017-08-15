@@ -78,15 +78,22 @@ class Board
         return 0
     end
 
+    # Incarcerates the given player
+    def send_to_jail(player)
+        @spaces[get_location(player)].remove_player(player)
+        @jail.add_player(player)
+        return -1
+    end
+
     # Moves the player using the dice roll
     def move_player_dice(player, dice)
         if (@jail.in_jail(player))
             new_loc = do_jail(player, dice)
-            @spaces[new_loc].add_player(player)
-            update_property_groups(new_loc - 10) # Subtract 10 for roll
+            @spaces[new_loc].add_player(player) if new_loc != -1
+            update_property_groups(dice.roll1 + dice.roll2) 
             return new_loc
         end
-        move_player(player, player.roll(dice))
+        move_player(player, dice.roll1 + dice.roll2)
     end
 
     # Returns the location after movement
@@ -108,10 +115,8 @@ class Board
             @spaces[0].pay_player(player)
         end
 
-        new_loc = check_special_move(new_loc)
-        if (new_loc == -1)
-            @jail.add_player(player)
-            return new_loc
+        if (check_special_move(new_loc) == -1)
+            return send_to_jail(player)
         end
 
         @spaces[new_loc].add_player(player)
@@ -165,10 +170,10 @@ class Board
             case @jail.read_in_option
                 when 1 then new_loc = @jail.roll_to_leave(player, dice)
                 when 2 then new_loc = 10
-                else new_loc = @jail.pay_to_leave(player, dice) + 10
+                else new_loc = @jail.pay_to_leave(player, dice)
             end
         else
-            new_loc = @jail.pay_to_leave(player, dice) + 10
+            new_loc = @jail.pay_to_leave(player, dice)
         end
 
         return new_loc 
