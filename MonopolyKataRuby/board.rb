@@ -11,7 +11,7 @@ require_relative "properties/real_estate_group.rb"
 require_relative "properties/utility_group.rb"
 require_relative "properties/railroad_group.rb"
 require_relative "properties/property_consts.rb"
-require_relative "properties/file_reader.rb"
+require_relative "file_reader.rb"
 require_relative "properties/railroad.rb"
 require_relative "properties/real_estate.rb"
 require_relative "properties/utility.rb"
@@ -41,6 +41,7 @@ class Board
     end
 
     attr_reader :jail
+    attr_reader :spaces
 
     # Checks if any special movments need to take place
     def check_special_move(new_loc)
@@ -83,48 +84,6 @@ class Board
         @spaces[get_location(player)].remove_player(player)
         @jail.add_player(player)
         return -1
-    end
-
-    # Moves the player using the dice roll
-    def move_player_dice(player, dice)
-        if (@jail.in_jail(player))
-            new_loc = do_jail(player, dice)
-            @spaces[new_loc].add_player(player) if new_loc != -1
-            update_property_groups(dice.roll1 + dice.roll2) 
-            return new_loc
-        end
-        move_player(player, dice.roll1 + dice.roll2)
-    end
-
-    # Returns the location after movement
-    def move_player(player, roll)
-
-        # Leave old location
-        cur_loc = get_location(player)
-        @spaces[cur_loc].remove_player(player)
-
-        # Calculate next location and move
-        times_passing_go = (cur_loc + roll) / 40
-        new_loc = (cur_loc + roll) % 40
-
-        # If player lands on go don't overpay
-        times_passing_go = new_loc == 0 ? times_passing_go - 1 : times_passing_go 
-        
-        # Found out if the player needs to be payed for passing go
-        times_passing_go.times do
-            @spaces[0].pay_player(player)
-        end
-
-        if (check_special_move(new_loc) == -1)
-            return send_to_jail(player)
-        end
-
-        @spaces[new_loc].add_player(player)
-
-        # Tell the property groups to update their rent rates if necessary
-        update_property_groups(roll)
-
-        return new_loc
     end
 
     def get_space_instance(location)

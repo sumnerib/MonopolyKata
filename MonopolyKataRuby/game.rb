@@ -52,10 +52,11 @@ class Game
         @players.each { |i|
             
             i.roll(dice)
+            puts "#{i.piece}: #{i.doubles}"
             if (doubles_tracker(i))    # Check for 3 consecutive doubles
                 new_loc = @board.send_to_jail(i)
             else
-                new_loc = @board.move_player_dice(i, dice)
+                new_loc = i.take_turn(@board, dice)
             end
 
             scorecard << (new_loc == -1 ? "#{i.piece}: JAIL, " : "#{i.piece}: #{new_loc}, ")
@@ -82,6 +83,7 @@ class Game
     # returns true if third time rolling doubles
     def doubles_tracker(player)
         if (player.doubles == 3)
+            puts "Here"
             player.doubles = 0
             return true
         else

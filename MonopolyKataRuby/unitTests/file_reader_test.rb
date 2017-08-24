@@ -4,7 +4,7 @@
 ## author: Isaac Sumner
 ############################
 
-require_relative "../properties/file_reader.rb"
+require_relative "../file_reader.rb"
 require_relative "../properties/property.rb"
 require "test/unit"
 
