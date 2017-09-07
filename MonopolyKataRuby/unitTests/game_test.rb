@@ -17,6 +17,7 @@ class Game_Test<Test::Unit::TestCase
 
         td = Test_Dice.new(8, 6)
         g = Game.new(20)
+
         g.add_player("Horse")
         g.add_player("Car")
 
@@ -50,7 +51,7 @@ class Game_Test<Test::Unit::TestCase
         g.play_round(td1)
         g.play_round(td1)
         g.play_round(td1)
-        assert_equal(9850, p7.balance)
+        assert_equal(9768, p7.balance)
         assert(g.board.jail.in_jail(p7))
 
         # Roll doubles 3 times in a row, pass or land on go during first two 
@@ -64,7 +65,7 @@ class Game_Test<Test::Unit::TestCase
         g.play_round(td)
         g.play_round(td)
         g.play_round(td1)
-        assert_equal(9778, p8.balance)
+        assert_equal(9763, p8.balance)
         g.play_round(td1)
         g.play_round(td1)
         assert(g.board.jail.in_jail(p8))

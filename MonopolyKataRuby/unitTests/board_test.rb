@@ -32,5 +32,14 @@ class Board_Test<Test::Unit::TestCase
         # Send to jail
         b1.send_to_jail(p3)
         assert_equal(-1, b1.get_location(p3))
+
+        # Community Chest
+        p2.add_balance(1000)
+        p2.move(b1, 2)
+        assert_equal(1100, p2.balance)
+
+        # Chance
+        p2.move(b1, 5)
+        assert_equal(1200, p2.balance)        
     end
 end

@@ -3,8 +3,10 @@
 ## author: Isaac Sumner
 ############################
 
-class Card
+require_relative "card.rb"
 
+class Get_Out_of_Jail < Card
+    
     def initialize(description)
         @description = description
     end
@@ -12,6 +14,6 @@ class Card
     attr_reader :description
 
     def perform(player)
-        raise "Abstract perform has not been implemented"
+        player.get_out_of_jail = self
     end
 end

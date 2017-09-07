@@ -133,7 +133,6 @@ class Player_Test<Test::Unit::TestCase
         #assert_equal(10, p5.take_turn(b, td1))
         p5.move(b, 10)
         p5.move(b, 20)
-        puts b.get_location(p5)
         # Roll non-doubles, land on Go To Jail, player is in Jail, turn is over, 
         # balance is unchanged.
         assert(b.jail.in_jail(p5))

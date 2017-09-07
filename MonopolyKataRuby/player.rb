@@ -13,17 +13,14 @@ class Player
         @doubles = 0    # Consecutive Doubles
         @location = 0
         @dice = nil
+        @get_out_of_jail = nil
     end
 
     attr_reader   :piece
     attr_reader   :location
     attr_accessor :balance
-    attr_accessor :doubles 
-
-    #Redefine equality operator
-    #def ==(p)
-     #   @piece == p.piece
-    #end
+    attr_accessor :doubles
+    attr_accessor :get_out_of_jail 
 
     def roll(dice)
         @dice = dice

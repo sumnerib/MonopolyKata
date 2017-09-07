@@ -4,6 +4,7 @@
 ############################
 
 require_relative "card.rb"
+require_relative "../player.rb"
 
 class Transaction_Card < Card 
 
@@ -13,7 +14,12 @@ class Transaction_Card < Card
         @is_collect = is_collect
     end
 
-    # TODO: do the transaction
+    def perform(player)
+        perform_transaction(player)
+    end
+
     def perform_transaction(player)
+        puts description
+        @is_collect ? player.subtract_balance(@amount) : player.add_balance(@amount)
     end
 end

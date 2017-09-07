@@ -15,6 +15,11 @@ require_relative "file_reader.rb"
 require_relative "properties/railroad.rb"
 require_relative "properties/real_estate.rb"
 require_relative "properties/utility.rb"
+require_relative "cards/card_space.rb"
+require_relative "cards/deck.rb"
+require_relative "cards/movement_card.rb"
+require_relative "cards/transaction_card.rb"
+require_relative "cards/get_out_of_jail.rb"
 
 class Board
 
@@ -22,6 +27,8 @@ class Board
 
         @spaces = []
         @jail = Jail.new()
+        
+        # Init property groups
         @property_reader = File_Reader.new("C:\\Users\\IBSUMNE\\MonopolyKata\\MonopolyKataRuby\\properties\\property_input.in")
         @property_groups = Hash[
             Property_Consts::PURPLE => Real_Estate_Group.new(),
@@ -35,6 +42,39 @@ class Board
             Property_Consts::UTIL => Utility_Group.new(),
             Property_Consts::RAILROAD => Railroad_Group.new()
         ]
+
+        # Init cards
+        chance_reader = File_Reader.new("C:\\Users\\IBSUMNE\\MonopolyKata\\MonopolyKataRuby\\cards\\chance.in")
+        @chance = Deck.new()
+        while (chance_reader.has_next)
+            line = chance_reader.next()
+            case line[0]
+            when "Transaction"
+                @chance.add_card(Transaction_Card.new(line[3], line[1].to_i,
+                                                   line[2] == "true"))
+            when "Movement"
+                @chance.add_card(Movement_Card.new(line[2], line[1].to_i, self))
+            else
+                @chance.add_card(Get_Out_of_Jail.new(line[0]))
+            end
+        end
+
+        community_chest_reader = File_Reader.new("C:\\Users\\IBSUMNE\\MonopolyKata\\MonopolyKataRuby\\cards\\community_chest.in")
+        @community_chest = Deck.new()
+        while (community_chest_reader.has_next)
+            line = community_chest_reader.next()
+            case line[0]
+            when "Transaction"
+                @community_chest.add_card(Transaction_Card.new(line[3], 
+                                          line[1].to_i, line[2] == "true"))
+            when "Movement"
+                @community_chest.add_card(Movement_Card.new(line[2], 
+                                                line[1].to_i, self))
+            else
+                @community_chest.add_card(Get_Out_of_Jail.new(line[0]))
+            end
+        end
+
         40.times do |i|
             @spaces.push(get_space_instance(i))
         end
@@ -42,6 +82,8 @@ class Board
 
     attr_reader :jail
     attr_reader :spaces
+    attr_reader :chance
+    attr_reader :community_chest
 
     # Checks if any special movments need to take place
     def check_special_move(new_loc)
@@ -93,7 +135,9 @@ class Board
             when 10 then Just_Visiting.new()
             when 30 then Go_To_Jail.new(@jail)
             when 38 then Luxury_Tax.new()
-            when 2, 7, 17, 20, 22, 33, 36 then Space.new(location)
+            when 2, 17, 33 then Card_Space.new(location, @community_chest)
+            when 7, 22, 36 then Card_Space.new(location, @chance)
+            when 21 then Space.new(location)
             else get_next_property()
         end
     end
@@ -128,7 +172,8 @@ class Board
             # Get the players choice
             case @jail.read_in_option
                 when 1 then new_loc = @jail.roll_to_leave(player, dice)
-                when 2 then new_loc = 10
+                when 2
+                    new_loc = 10 unless player.get_out_of_jail.nil? 
                 else new_loc = @jail.pay_to_leave(player, dice)
             end
         else

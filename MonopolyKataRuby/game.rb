@@ -10,10 +10,17 @@ require_relative "./board.rb"
 
 class Game
 
-    def initialize(rounds)
+    def initialize(rounds, shuffle=false)
 
         @rounds = rounds
         @board = Board.new()
+
+        # If shuffle is true shuffle chance/chest decks
+        if shuffle
+            @board.chance.shuffle_deck()
+            @board.community_chest.shuffle_deck()
+        end
+
         @players = []
     end
 
@@ -34,7 +41,7 @@ class Game
         return false
     end
 
-    def create_order(seed)
+    def create_order(seed=time.usec)
 
         @players = @players.shuffle(random: Random.new(seed))
 
@@ -52,7 +59,6 @@ class Game
         @players.each { |i|
             
             i.roll(dice)
-            puts "#{i.piece}: #{i.doubles}"
             if (doubles_tracker(i))    # Check for 3 consecutive doubles
                 new_loc = @board.send_to_jail(i)
             else
