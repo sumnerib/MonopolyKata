@@ -18,7 +18,7 @@ class Just_Visiting_test<Test::Unit::TestCase
         b = Board.new()
 
         #check that players go to Just Visiting when landing on Go to Jail
-        b.move_player(p, 30)
-        assert(b.get_space(10).has_player(p))
+        p.move(b, 10)
+        assert(!b.jail.in_jail(p))
     end
 end

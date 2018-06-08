@@ -1,0 +1,17 @@
+Movement,0,Advance to Go (Collect $200) 
+Transaction,75,false,Bank error in your favor – collect $75 
+Transaction,50,true,Doctor's fees – Pay $50 
+Get out of jail free – this card may be kept until needed, or sold 
+Movement,goToJail,Go to jail – go directly to jail – Do not pass Go, do not collect $200 
+Transaction,10,false,It is your birthday Collect $10 from each player 
+Transaction,50,false,Grand Opera Night – collect $50 from every player for opening night seats 
+Transaction,20,false,Income Tax refund – collect $20 
+Transaction,100,false,Life Insurance Matures – collect $100 
+Transaction,100,true,Pay Hospital Fees of $100 
+Transaction,50,true,Pay School Fees of $50 
+Transaction,25,false,Receive $25 Consultancy Fee 
+Transaction,false,You are assessed for street repairs – $40 per house, $115 per hotel 
+Transaction,10,false,You have won second prize in a beauty contest– collect $10 
+Transaction,100,false,You inherit $100 
+Transaction,50,false,From sale of stock you get $50 
+Transaction,100,false,Holiday Fund matures - Receive $100
